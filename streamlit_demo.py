@@ -1,4 +1,5 @@
 import time
+import os
 from openai import AzureOpenAI
 from dotenv import dotenv_values
 import streamlit as st
@@ -9,7 +10,19 @@ with st.columns(5)[2]:
     st.image(logo_path, caption="Next-Step AI", use_column_width=True)
 
 # Load environment variables
-config = dotenv_values(verbose=True)
+try:
+    # Load from .env file
+    config = dotenv_values(verbose=True)
+
+    # Fall back to system environment variables if not found in .env
+    config["AZURE_OPENAI_ENDPOINT"] = config.get("AZURE_OPENAI_ENDPOINT") or os.getenv("AZURE_OPENAI_ENDPOINT")
+    config["AZURE_OPENAI_API_KEY"] = config.get("AZURE_OPENAI_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
+
+    if not all(config.values()):
+        raise ValueError("Some environment variables are missing.")
+
+except Exception as e:
+    st.error(f"Error loading environment variables: {e}")
 
 
 client = AzureOpenAI(
