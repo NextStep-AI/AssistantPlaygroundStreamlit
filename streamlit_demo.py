@@ -33,7 +33,7 @@ assistant = client.beta.assistants.create(
 )
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "Hi There! Welcome to Next-Step.AI. I'm here to help you think about what's next after High School.  What's your name?"}]
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
